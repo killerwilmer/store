@@ -1,8 +1,10 @@
 package com.killerwilmer.store.controller;
 
 import com.killerwilmer.store.entity.Category;
+import com.killerwilmer.store.entity.Product;
 import com.killerwilmer.store.response.ApiResponse;
 import com.killerwilmer.store.service.CategoryServiceImpl;
+import com.killerwilmer.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +17,12 @@ import java.util.Optional;
 public class CategoryController {
 
   private final CategoryServiceImpl categoryService;
+  private final ProductService productService;
 
   @Autowired
-  public CategoryController(CategoryServiceImpl categoryService) {
+  public CategoryController(CategoryServiceImpl categoryService, ProductService productService) {
     this.categoryService = categoryService;
+    this.productService = productService;
   }
 
   @GetMapping
@@ -60,5 +64,21 @@ public class CategoryController {
   @DeleteMapping("/{id}")
   public void deleteCategory(@PathVariable Integer id) {
     categoryService.deleteCategory(id);
+  }
+
+  @PostMapping("/{categoryId}/add-product/{productId}")
+  public ResponseEntity<Category> addProductToCategory(
+      @PathVariable Integer categoryId, @PathVariable Integer productId) {
+    Category category =
+        categoryService.getCategoryById(categoryId).stream().findFirst().orElse(null);
+    Product product = productService.getProductById(productId).stream().findFirst().orElse(null);
+
+    if (category != null && product != null) {
+      category.getProducts().add(product);
+      categoryService.createCategory(category);
+      return ResponseEntity.ok(category);
+    } else {
+      return ResponseEntity.notFound().build();
+    }
   }
 }

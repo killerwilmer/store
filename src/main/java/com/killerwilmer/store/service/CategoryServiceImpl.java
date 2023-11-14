@@ -23,14 +23,17 @@ public class CategoryServiceImpl implements CategoryService {
     return categoryRepository.findAllByOrderByNameAsc();
   }
 
+  @Override
   public Optional<Category> getCategoryById(Integer id) {
     return categoryRepository.findById(id);
   }
 
+  @Override
   public Category createCategory(Category category) {
     return categoryRepository.save(category);
   }
 
+  @Override
   public Optional<Category> updateCategory(Integer id, Category updatedCategory) {
     if (categoryRepository.existsById(id)) {
       updatedCategory.setId(id);
@@ -40,6 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
   }
 
+  @Override
   public void deleteCategory(Integer id) {
     categoryRepository.deleteById(id);
   }

@@ -2,6 +2,8 @@ package com.killerwilmer.store.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Products", schema = "STORE")
@@ -16,6 +18,20 @@ public class Product {
 
   @Column(name = "price", nullable = false, precision = 10, scale = 2)
   private BigDecimal price;
+
+  @ManyToMany
+  @JoinTable(name = "Products_Categories",
+          joinColumns = @JoinColumn(name = "product_id"),
+          inverseJoinColumns = @JoinColumn(name = "category_id"))
+  private Set<Category> categories = new LinkedHashSet<>();
+
+  public Set<Category> getCategories() {
+    return categories;
+  }
+
+  public void setCategories(Set<Category> categories) {
+    this.categories = categories;
+  }
 
   public Integer getId() {
     return id;

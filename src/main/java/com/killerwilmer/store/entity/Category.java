@@ -2,6 +2,9 @@ package com.killerwilmer.store.entity;
 
 import jakarta.persistence.*;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "Categories")
 public class Category {
@@ -12,6 +15,20 @@ public class Category {
 
   @Column(name = "name")
   private String name;
+
+  @ManyToMany
+  @JoinTable(name = "Products_Categories",
+          joinColumns = @JoinColumn(name = "category_id"),
+          inverseJoinColumns = @JoinColumn(name = "product_id"))
+  private Set<Product> products = new LinkedHashSet<>();
+
+  public Set<Product> getProducts() {
+    return products;
+  }
+
+  public void setProducts(Set<Product> products) {
+    this.products = products;
+  }
 
   public Integer getId() {
     return id;
