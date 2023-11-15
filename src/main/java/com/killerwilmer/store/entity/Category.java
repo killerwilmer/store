@@ -1,5 +1,6 @@
 package com.killerwilmer.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.LinkedHashSet;
@@ -16,10 +17,12 @@ public class Category {
   @Column(name = "name")
   private String name;
 
+  @JsonIgnore
   @ManyToMany
-  @JoinTable(name = "Products_Categories",
-          joinColumns = @JoinColumn(name = "category_id"),
-          inverseJoinColumns = @JoinColumn(name = "product_id"))
+  @JoinTable(
+      name = "Products_Categories",
+      joinColumns = @JoinColumn(name = "category_id"),
+      inverseJoinColumns = @JoinColumn(name = "product_id"))
   private Set<Product> products = new LinkedHashSet<>();
 
   public Set<Product> getProducts() {

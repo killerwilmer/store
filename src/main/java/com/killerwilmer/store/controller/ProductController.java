@@ -5,6 +5,7 @@ import com.killerwilmer.store.entity.Product;
 import com.killerwilmer.store.service.CategoryService;
 import com.killerwilmer.store.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

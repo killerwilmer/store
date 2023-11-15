@@ -1,5 +1,6 @@
 package com.killerwilmer.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.LinkedHashSet;
@@ -19,12 +20,12 @@ public class Product {
   @Column(name = "price", nullable = false, precision = 10, scale = 2)
   private BigDecimal price;
 
+  @JsonIgnore
   @ManyToMany
   @JoinTable(name = "Products_Categories",
           joinColumns = @JoinColumn(name = "product_id"),
           inverseJoinColumns = @JoinColumn(name = "category_id"))
   private Set<Category> categories = new LinkedHashSet<>();
-
   public Set<Category> getCategories() {
     return categories;
   }
