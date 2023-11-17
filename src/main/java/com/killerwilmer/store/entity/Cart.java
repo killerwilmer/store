@@ -3,8 +3,7 @@ package com.killerwilmer.store.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "Carts", schema = "STORE")
@@ -57,5 +56,24 @@ public class Cart {
 
   public void setStatus(String status) {
     this.status = status;
+  }
+
+  public Invoice generateInvoice() {
+    Invoice invoice = new Invoice();
+    invoice.setBuyer(this.buyer);
+
+    Set<InvoiceItem> invoiceItems = new HashSet<>();
+    for (CartItem cartItem : this.cartItems) {
+      InvoiceItem invoiceItem = new InvoiceItem();
+      invoiceItem.setInvoice(invoice);
+      invoiceItem.setProduct(cartItem.getProduct());
+      invoiceItem.setQuantity(cartItem.getQuantity());
+      invoiceItem.setUnitPrice(cartItem.getUnitPrice());
+
+      invoiceItems.add(invoiceItem);
+    }
+
+    invoice.setInvoiceItems(invoiceItems);
+    return invoice;
   }
 }
